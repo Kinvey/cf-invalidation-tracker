@@ -1,6 +1,12 @@
 {
   "name": "cf-invalidation-tracker",
   "version": "0.0.1",
+  "description": "A cache that keeps track of accessed URLs, and can send these in an invalidation requests to Amazon CloudFront",
+  "homepage": "http://www.kinvey.com",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Kinvey/cf-invalidation-tracker.git"
+  },
   "main": "index",
   "scripts": {
     "test": "mocha"

@@ -49,6 +49,25 @@ module.exports = (options) ->
           throw err
 
         if pathArray?.length > 0
+          tracking = Math.ceil(pathArray.length/MAX_PATHS_PER_REQUEST)
+          errorOccurred = false
+
+          # Handle completion of the path invalidations
+          handleCompletion = (err)->
+            if err
+              errorOccurred = true
+
+            tracking--
+            if tracking <= 0
+              if errorOccurred == false
+                # Clear all keys only on invalidation success
+                store.clearAll()
+                console.log 'Cleared redis database because there were no errors.'
+              else
+                console.log 'Did not clear redis tracking database because there was an error.'
+
+              store.disconnect?()
+
           # Split into chunks of MAX_PATHS_PER_REQUEST
           for i in [0 .. pathArray.length] by MAX_PATHS_PER_REQUEST
             ijsConfig =
@@ -61,11 +80,10 @@ module.exports = (options) ->
             console.log 'Sending invalidation to CloudFront... (' + ijsConfig.resourcePaths.length + ' paths)'
             invalidatejs ijsConfig, (err, status, body)->
               if err
+                handleCompletion(false)
                 console.log 'Error!', err, status, body
               else
+                handleCompletion(true)
                 console.log 'Success!', status
-                # Clear all keys only on invalidation success
-                store.clearAll()
 
-              store.disconnect?()
   }

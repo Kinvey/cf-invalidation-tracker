@@ -64,8 +64,8 @@ module.exports = (options) ->
                 console.log 'Error!', err, status, body
               else
                 console.log 'Success!', status
+                # Clear all keys only on invalidation success
+                store.clearAll()
 
-            # Clear all keys
-            store.clearAll()
-            store.disconnect?()
+              store.disconnect?()
   }

@@ -39,8 +39,11 @@ module.exports = (options) ->
   {
     storeUrl: (url, ttlInSec=0) ->
       store.connect?() if store? and not store.isConnected?()
-      store?.set url, 1
-      store?.setTTL? url, ttlInSec if ttlInSec > 0
+      if url.length < 4096
+        store?.set url, 1
+        store?.setTTL? url, ttlInSec if ttlInSec > 0
+      else
+        console.log 'URL attmpted to be stored with too large of a length'
 
     setUrlTTL: (url, ttl) ->
       store.connect?() if store? and not store.isConnected?()

@@ -76,12 +76,12 @@ module.exports = (options) ->
 
             tracking--
             if tracking <= 0
-              if errorOccurred == false
+              if errorOccurred
+                console.log 'Did not clear redis tracking database because there was an error.'
+              else
                 # Clear all keys only on invalidation success
                 store.clearAll()
                 console.log 'Cleared redis database because there were no errors.'
-              else
-                console.log 'Did not clear redis tracking database because there was an error.'
 
               store.disconnect?()
 
@@ -97,10 +97,10 @@ module.exports = (options) ->
             console.log 'Sending invalidation to CloudFront... (' + ijsConfig.resourcePaths.length + ' paths)'
             invalidatejs ijsConfig, (err, status, body)->
               if err
-                handleCompletion(false)
+                handleCompletion(true)
                 console.log 'Error!', err, status, body
               else
-                handleCompletion(true)
+                handleCompletion(false)
                 console.log 'Success!', status
 
   }

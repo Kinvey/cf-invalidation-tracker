@@ -39,7 +39,7 @@ module.exports = (options) ->
   {
     storeUrl: (url, ttlInSec=0) ->
       store.connect?() if store? and not store.isConnected?()
-      if url.length < 4096
+      if url.length < 2000 # Arbitrary length, I am not sure how long cloudfront actually permits the lengths to be
         store?.set url, 1
         store?.setTTL? url, ttlInSec if ttlInSec > 0
       else

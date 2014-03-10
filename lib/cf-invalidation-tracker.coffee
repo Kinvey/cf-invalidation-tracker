@@ -43,8 +43,8 @@ module.exports = (options) ->
         console.log 'URL attmpted to be stored with too large of a length'
         return
 
-      if url.indexOf '<' != -1 or url.indexOf '>' != -1
-        console.log 'Url contains < or > characters which are not valid in a url'
+      if url.indexOf '<' != -1 or url.indexOf '>' != -1 or url.indexOf '[' != -1 or url.indexOf ']' != -1
+        console.log 'Url contains < or > or [ or ] characters which are not valid in a url'
         return
 
       store?.set url, 1

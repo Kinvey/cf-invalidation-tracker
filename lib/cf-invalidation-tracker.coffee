@@ -39,11 +39,17 @@ module.exports = (options) ->
   {
     storeUrl: (url, ttlInSec=0) ->
       store.connect?() if store? and not store.isConnected?()
-      if url.length < 2000 # Arbitrary length, I am not sure how long cloudfront actually permits the lengths to be
-        store?.set url, 1
-        store?.setTTL? url, ttlInSec if ttlInSec > 0
-      else
+      if url.length > 2000 # Arbitrary length, I am not sure how long cloudfront actually permits the lengths to be
         console.log 'URL attmpted to be stored with too large of a length'
+        return
+
+      if url.indexOf '<' != -1 or url.indexOf '>' != -1
+        console.log 'Url contains < or > characters which are not valid in a url'
+        return
+
+      store?.set url, 1
+      store?.setTTL? url, ttlInSec if ttlInSec > 0
+
 
     setUrlTTL: (url, ttl) ->
       store.connect?() if store? and not store.isConnected?()

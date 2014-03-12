@@ -43,9 +43,12 @@ module.exports = (options) ->
         console.log 'URL attmpted to be stored with too large of a length'
         return
 
-      if url.indexOf '<' != -1 or url.indexOf '>' != -1 or url.indexOf '[' != -1 or url.indexOf ']' != -1
-        console.log 'Url contains < or > or [ or ] characters which are not valid in a url'
-        return
+      invalidKeys = ['<','>','[',']']
+      for key in invalidKeys
+        if -1 isnt url.indexOf key
+          console.log 'Url contains < or > or [ or ] characters which are not valid in a url'
+          return
+
 
       store?.set url, 1
       store?.setTTL? url, ttlInSec if ttlInSec > 0

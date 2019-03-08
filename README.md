@@ -137,7 +137,7 @@ heroku run cake invalidateCF --app your-app-name
 
 ## Testing
 
-To run the included [mocha](http://visionmedia.github.com/mocha/) tests, once you have included `cf-invalidation-tracker` in your `package.json` file and installed with `npm install`, run:
+To run the included [mocha](http://mochajs.org/) tests, once you have included `cf-invalidation-tracker` in your `package.json` file and installed with `npm install`, run:
 
 ```
 npm test cf-invalidation-tracker
